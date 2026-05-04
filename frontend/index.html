@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Scholar Track - Student Management System Login">
+  <title>Scholar Track - Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- ============ LOGIN PAGE ============ -->
+  <div class="login-wrapper">
+    <div class="login-card glass">
+      <div class="logo">🎓</div>
+      <h1>Scholar Track</h1>
+      <p class="subtitle">Student Management System</p>
+
+      <form id="loginForm" autocomplete="off">
+        <!-- Username -->
+        <div class="form-group" id="usernameGroup">
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="Enter your username" required>
+          <p class="form-error" id="usernameError">Username is required</p>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group" id="passwordGroup">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter your password" required>
+          <p class="form-error" id="passwordError">Password is required</p>
+        </div>
+
+        <!-- Role Selection -->
+        <div class="form-group">
+          <label>Select Role</label>
+          <div class="role-toggle">
+            <button type="button" id="roleAdmin" class="active" onclick="selectRole('admin')">Admin</button>
+            <button type="button" id="roleUser" onclick="selectRole('user')">User</button>
+          </div>
+        </div>
+
+        <!-- Login Button -->
+        <button type="submit" class="btn btn-primary btn-full" id="loginBtn">
+          Sign In →
+        </button>
+      </form>
+
+      <p style="margin-top: 20px; font-size: 0.78rem; color: var(--text-muted);">
+        Demo — Admin: admin / admin123 &nbsp;|&nbsp; User: user / user123
+      </p>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // ---- State ----
+    let selectedRole = 'admin';
+
+    // ---- Role Toggle ----
+    function selectRole(role) {
+      selectedRole = role;
+      document.getElementById('roleAdmin').classList.toggle('active', role === 'admin');
+      document.getElementById('roleUser').classList.toggle('active', role === 'user');
+    }
+
+    // ---- Toast Notification ----
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+      toast.innerHTML = `<span>${icons[type] || ''}</span> ${message}`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    // ---- Form Validation & Login ----
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      let valid = true;
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      // Validate username
+      if (!username) {
+        document.getElementById('usernameGroup').classList.add('error');
+        valid = false;
+      } else {
+        document.getElementById('usernameGroup').classList.remove('error');
+      }
+
+      // Validate password
+      if (!password) {
+        document.getElementById('passwordGroup').classList.add('error');
+        valid = false;
+      } else {
+        document.getElementById('passwordGroup').classList.remove('error');
+      }
+
+      if (!valid) return;
+
+      // Check credentials (simulated)
+      const credentials = {
+        admin: { password: 'admin123', role: 'admin' },
+        user: { password: 'user123', role: 'user' }
+      };
+
+      const cred = credentials[username];
+      if (cred && cred.password === password && cred.role === selectedRole) {
+        // Store session in localStorage
+        localStorage.setItem('scholartrack_user', JSON.stringify({
+          username: username,
+          role: selectedRole,
+          loggedIn: true
+        }));
+        showToast('Login successful! Redirecting...', 'success');
+        setTimeout(() => window.location.href = 'dashboard.html', 800);
+      } else {
+        showToast('Invalid credentials. Please try again.', 'error');
+      }
+    });
+
+    // Clear errors on input
+    document.querySelectorAll('.form-group input').forEach(input => {
+      input.addEventListener('input', () => {
+        input.closest('.form-group').classList.remove('error');
+      });
+    });
+
+    // Redirect if already logged in
+    const session = JSON.parse(localStorage.getItem('scholartrack_user') || 'null');
+    if (session && session.loggedIn) {
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>
