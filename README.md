@@ -4,7 +4,7 @@ A 3-tier Student Management System with **Frontend** (HTML/CSS/JS), **Backend** 
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 /scholar-track
@@ -30,7 +30,7 @@ A 3-tier Student Management System with **Frontend** (HTML/CSS/JS), **Backend** 
 
 ---
 
-## 🧩 Modules
+## Modules
 
 ### 1. Login Module
 - **Frontend**: Glassmorphism login card with username/password fields and role toggle (Admin/User). Sessions stored in `localStorage`.
@@ -54,7 +54,7 @@ A 3-tier Student Management System with **Frontend** (HTML/CSS/JS), **Backend** 
 
 ---
 
-## 🚀 How to Run
+## How to Run
 
 ### Frontend
 1. Open `frontend/index.html` in any modern web browser.
@@ -82,42 +82,3 @@ scholar_track.exe
 - Run queries individually against your existing `Students` table.
 
 ---
-
-## 🔑 Role-Based Access
-
-| Feature            | Admin | User |
-|--------------------|-------|------|
-| View Students      | ✅    | ✅   |
-| Search Students    | ✅    | ✅   |
-| Generate Reports   | ✅    | ✅   |
-| Add Student        | ✅    | ❌   |
-| Update Student     | ✅    | ❌   |
-| Delete Student     | ✅    | ❌   |
-
----
-
-## 📋 Database Schema (Reference)
-
-| Field      | Type        | Constraint  |
-|------------|-------------|-------------|
-| student_id | INT         | PRIMARY KEY |
-| name       | VARCHAR     |             |
-| age        | INT         |             |
-| course     | VARCHAR     |             |
-| grade      | FLOAT       |             |
-| contact    | VARCHAR     |             |
-
----
-
-## ⚠️ Architecture Note
-
-This project follows a **conceptual 3-tier architecture**:
-
-```
-User → Frontend (HTML/CSS/JS) → (Simulated) Backend (C++) → (Reference) Database (MySQL) → Response
-```
-
-- **No API connection** between frontend and backend
-- **No database connection** from C++ to MySQL
-- Each module operates independently with its own data simulation
-- Frontend uses `localStorage`, Backend uses file I/O, Database provides SQL references
